@@ -4,6 +4,8 @@ import win32api
 import random
 import time
 import math
+import subprocess
+import os
 
 STAGES = 200
 
@@ -124,9 +126,11 @@ def run_stage(stage, hdc, w, h):
 # ----------- Main -----------
 
 def main():
-    # First warning (long "10-foot" list)
+    print("Opening...")
+
+    # First warning
     warning1 = (
-        "WARNING LIST (10-foot long)\n\n"
+        "⚠ WARNING LIST (10-foot long)\n\n"
         "- This program is VISUAL ONLY.\n"
         "- It will NOT delete files.\n"
         "- It will NOT touch System32.\n"
@@ -150,9 +154,9 @@ def main():
     )
     win32api.MessageBox(0, warning1, "⚠ FIRST WARNING", win32con.MB_ICONEXCLAMATION)
 
-    # Second warning (shorter "3-foot" list)
+    # Second warning
     warning2 = (
-        "LAST WARNING (3-foot list)\n\n"
+        "⚠ LAST WARNING (3-foot list)\n\n"
         "- This program is safe.\n"
         "- It does NOT delete or change files.\n"
         "- It ONLY shows flashing shapes.\n"
@@ -161,7 +165,17 @@ def main():
     )
     win32api.MessageBox(0, warning2, "⚠ LAST WARNING", win32con.MB_ICONEXCLAMATION)
 
-    # Begin visual effects after warnings
+    # --- Open Notepad with a 124-line message ---
+    textfile = "DestructiveKiller_Info.txt"
+    with open(textfile, "w", encoding="utf-8") as f:
+        f.write("📜 Destructive Killer Information\n\n")
+        for i in range(1, 125):
+            f.write(f"Line {i}: This is part of the Destructive Killer visual experience.\n")
+
+    # Open real Notepad with the file
+    subprocess.Popen(["notepad.exe", os.path.abspath(textfile)])
+
+    # --- Begin visual effects ---
     w = win32api.GetSystemMetrics(0)
     h = win32api.GetSystemMetrics(1)
     hdc = get_desktop_dc()
